@@ -1,8 +1,6 @@
 # ProxyPool
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/proxy_pool`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+ProxyPool is a wrapper for [fate0/proxylist](https://github.com/fate0/proxylist)
 
 ## Installation
 
@@ -22,7 +20,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Get anonymous proxy randomly:
+
+```ruby
+require 'proxy_pool'
+
+ProxyPool.get_anonymous_proxy
+=> {"country"=>"RU", "anonymity"=>"high_anonymous", "from"=>"txt", "type"=>"https", "export_address"=>["94.242.58.14", "94.242.58.14"], "port"=>1448, "host"=>"94.242.58.14", "response_time"=>1.7}
+```
+
+Get transparent proxy randomly:
+
+```ruby
+require 'proxy_pool'
+
+ProxyPool.get_transparent_proxy
+=> {"country"=>"ID", "anonymity"=>"anonymous", "from"=>"txt", "type"=>"http", "export_address"=>["35.192.136.167", "118.97.191.162", "35.192.136.167"], "port"=>80, "host"=>"118.97.191.162", "response_time"=>3.04}
+```
+
+Use filter:
+
+```ruby
+require 'proxy_pool'
+
+ProxyPool.get_anonymous_proxy(type: 'https', country: 'ID', port: 80, from: 'txt')
+```
 
 ## Development
 
@@ -32,7 +54,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/proxy_pool.
+Bug reports and pull requests are welcome on GitHub at https://github.com/zt2/proxy_pool.
 
 ## License
 
