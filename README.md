@@ -1,4 +1,6 @@
 # ProxyPool
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fzt2%2FProxyPool.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fzt2%2FProxyPool?ref=badge_shield)
+
 
 ProxyPool is a wrapper for [fate0/proxylist](https://github.com/fate0/proxylist)
 
@@ -59,3 +61,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/zt2/pr
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fzt2%2FProxyPool.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fzt2%2FProxyPool?ref=badge_large)
