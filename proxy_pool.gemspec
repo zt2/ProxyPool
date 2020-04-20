@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "minitest", "~> 5.0"
 
-  spec.add_runtime_dependency 'http', '~> 4.1', '>= 4.1.1'
+  spec.add_runtime_dependency 'http', '~> 4.4', '>= 4.4.1'
 end
