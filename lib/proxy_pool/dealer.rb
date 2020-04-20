@@ -44,11 +44,12 @@ module ProxyPool
 
     # Get a random proxy
     #
-    # @param anonymous [TrueClass | FalseClass] Return high anonymous proxy if true
+    # @param anonymous [Boolean] Return high anonymous proxy if true
     # @param filter [Hash] Filter
+    # @param update [Boolean] Update pool before select proxy server
     # @return [Hash] Proxy
-    def get(anonymous=true, filter={})
-      update if @transparent_pools.nil? && @anonymous_pools.nil?
+    def get(anonymous=true, filter={}, update=false)
+      update if update || (@transparent_pools.nil? && @anonymous_pools.nil?)
 
       target_pools = if anonymous
                        @anonymous_pools
