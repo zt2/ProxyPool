@@ -26,17 +26,12 @@ module ProxyPool
     class ParseError < Error
     end
 
-    # Filter error
-    class FilterError < Error
-    end
-
-    attr_reader :transparent_pools, :anonymous_pools
+    attr_reader :pools
 
     # Update to latest proxy list from fate0/proxylist
     #
     def update
-      @transparent_pools = []
-      @anonymous_pools = []
+      @pools = []
 
       res = HTTP.get 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
       raise HTTPError, "invalid http code #{res.code}" if res.code != 200
@@ -48,19 +43,15 @@ module ProxyPool
 
     # Get a random proxy
     #
-    # @param anonymous [Boolean] Return high anonymous proxy if true
-    # @param filter [Hash] Filter
     # @return [Hash] Proxy
-    def get(anonymous = true, filter = {})
+    def get
       update if _need_update?
 
-      target_pools = if anonymous
-                       @anonymous_pools
+      target_pools = if block_given?
+                       @pools.select { |proxy| yield proxy }
                      else
-                       @transparent_pools
+                       @pools
                      end
-      filter.each_pair { |k, v| target_pools = _pool_filter(target_pools, k.to_s, v) }
-
       target_pools.sample
     end
 
@@ -69,8 +60,7 @@ module ProxyPool
     # @param proxy [Hash] Proxy
     # @return [nil]
     def remove(proxy)
-      @transparent_pools.delete(proxy)
-      @anonymous_pools.delete(proxy)
+      @pools.delete(proxy)
 
       nil
     end
@@ -97,27 +87,9 @@ module ProxyPool
         raise ParseError, "no anonymity field: #{line}"
       end
 
-      case proxy['anonymity']
-      when 'high_anonymous'
-        @anonymous_pools << proxy
-      else
-        @transparent_pools << proxy
-      end
+      @pools << proxy
     rescue JSON::ParserError
       raise ParseError, "JSON parser error when parsing #{line}"
-    end
-
-    # Select proxy by filter
-    #
-    # @param proxy_pools [Array] Proxy pool
-    # @param key [String] Filter key
-    # @param value [String] Filter value
-    def _pool_filter(proxy_pools, key, value)
-      proxy_pools.select do |proxy|
-        raise FilterError, "invalid filter: #{key}" unless proxy.key?(key)
-
-        proxy[key] == value
-      end
     end
   end
 end
