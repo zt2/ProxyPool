@@ -20,30 +20,35 @@ Or install it yourself as:
 
 ## Usage
 
-Get anonymous proxy randomly:
+Require
 
 ```ruby
 require 'proxy_pool'
-
-ProxyPool.get_anonymous_proxy
-=> {"country"=>"RU", "anonymity"=>"high_anonymous", "from"=>"txt", "type"=>"https", "export_address"=>["94.242.58.14", "94.242.58.14"], "port"=>1448, "host"=>"94.242.58.14", "response_time"=>1.7}
 ```
 
-Get transparent proxy randomly:
+Get proxy randomly:
 
 ```ruby
-require 'proxy_pool'
-
-ProxyPool.get_transparent_proxy
-=> {"country"=>"ID", "anonymity"=>"anonymous", "from"=>"txt", "type"=>"http", "export_address"=>["35.192.136.167", "118.97.191.162", "35.192.136.167"], "port"=>80, "host"=>"118.97.191.162", "response_time"=>3.04}
+ProxyPool.get
 ```
 
-Use filter:
+Or you can create any condition in block
 
 ```ruby
-require 'proxy_pool'
+# Select proxy by response time
+ProxyPool.get { |proxy| proxy['response_time'] < 2 }
+```
 
-ProxyPool.get_anonymous_proxy(type: 'https', country: 'ID', port: 80, from: 'txt')
+Get high anonymous proxy:
+
+```ruby
+ProxyPool.get_high_anonymous_proxy
+```
+
+Get proxy by country
+
+```ruby
+ProxyPool.get_by_country('us')
 ```
 
 ## Development
