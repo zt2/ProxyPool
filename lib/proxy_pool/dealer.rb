@@ -38,7 +38,11 @@ module ProxyPool
 
       @updated_at = Time.now
 
-      res.body.to_s.split("\n").each { |line| _pool_parse(line) }
+      res.body.to_s.split("\n").each do |line|
+        _pool_parse(line)
+      rescue ParseError
+        next
+      end
     end
 
     # Get a random proxy
@@ -83,8 +87,10 @@ module ProxyPool
     # @param line [String]
     def _pool_parse(line)
       proxy = JSON.parse(line)
-      unless proxy.key?('anonymity')
-        raise ParseError, "no anonymity field: #{line}"
+      if proxy['anonymity'].nil? ||
+          proxy['type'].nil? ||
+          proxy['country'].nil?
+        raise ParseError
       end
 
       @pools << proxy
