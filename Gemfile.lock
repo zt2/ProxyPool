@@ -39,7 +39,7 @@ DEPENDENCIES
   bundler (~> 2.0)
   minitest (~> 5.0)
   proxy_pool!
-  rake (~> 10.0)
+  rake (~> 13.0)
 
 BUNDLED WITH
    2.1.4
