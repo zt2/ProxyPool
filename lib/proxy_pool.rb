@@ -1,31 +1,60 @@
+# frozen_string_literal: true
+
 module ProxyPool
   #
   # Errors
   #
 
   # Base error
-  class Error < StandardError;
+  class Error < StandardError
   end
 
   require 'proxy_pool/version'
   require 'proxy_pool/dealer'
 
   class << self
-    # Get anonymous proxy from pool randomly
+    # Get a proxy from proxy pool
     #
-    # @param filter [Hash] Filter
     # @return [Hash] Proxy
-    def get_anonymous_proxy(filter={})
-      ProxyPool::Dealer.instance.get(true, filter)
+    def get(&block)
+      ProxyPool::Dealer.instance.get(&block)
     end
 
-    # Get transparent proxy from pool randomly
+    # Get high anonymous proxy
     #
-    # @param filter [Hash] Filter
     # @return [Hash] Proxy
-    def get_transparent_proxy(filter={})
-      ProxyPool::Dealer.instance.get(false, filter)
+    def get_high_anonymous_proxy
+      get { |proxy| proxy['anonymity'] == 'high_anonymous' }
+    end
+
+    # Get proxy by country
+    #
+    # @param cn [String] Country code
+    # @return [Hash] Proxy
+    def get_by_country(cn)
+      get { |proxy| proxy['country'].downcase == cn.downcase }
+    end
+
+    # Get http proxy
+    #
+    # @return [Hash] Proxy
+    def get_http_proxy
+      get { |proxy| proxy['type'] == 'http' }
+    end
+
+    # Get https proxy
+    #
+    # @return [Hash] Proxy
+    def get_https_proxy
+      get { |proxy| proxy['type'] == 'https' }
+    end
+
+    # Remove this proxy from pool
+    #
+    # @param proxy [Hash] Proxy
+    # @return [nil]
+    def remove(proxy)
+      ProxyPool::Dealer.instance.remove(proxy)
     end
   end
-
 end
