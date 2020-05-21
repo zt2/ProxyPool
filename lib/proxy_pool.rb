@@ -13,6 +13,12 @@ module ProxyPool
   require 'proxy_pool/dealer'
 
   class << self
+    # Update proxy pool
+    #
+    def update
+      ProxyPool::Dealer.instance.update
+    end
+
     # Get a proxy from proxy pool
     #
     # @return [Hash] Proxy
