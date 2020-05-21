@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    proxy_pool (0.2.1)
+    proxy_pool (0.2.2)
       http (~> 4.4, >= 4.4.1)
 
 GEM
